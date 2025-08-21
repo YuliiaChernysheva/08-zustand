@@ -5,12 +5,12 @@ import { useRouter } from "next/navigation";
 import css from "./NoteForm.module.css";
 import type { Tag } from "@/types/note";
 import { addNote } from "@/lib/api";
-import { useNoteDraftStore } from "@/lib/store/noteStore";
+import { useNoteDraft } from "@/lib/store/noteStore";
 
 const NoteForm = () => {
   const router = useRouter();
 
-  const { draft, setDraft, clearDraft } = useNoteDraftStore();
+  const { draft, setDraft, clearDraft } = useNoteDraft();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -55,7 +55,7 @@ const NoteForm = () => {
           name="title"
           type="text"
           className={css.input}
-          value={draft.title}
+          defaultValue={draft.title}
           onChange={handleChange}
           required
           minLength={3}
@@ -69,8 +69,7 @@ const NoteForm = () => {
           id="content"
           name="content"
           className={css.textarea}
-          rows={8}
-          value={draft.content}
+          defaultValue={draft.title}
           onChange={handleChange}
           maxLength={500}
         />
@@ -82,7 +81,7 @@ const NoteForm = () => {
           id="tag"
           name="tag"
           className={css.select}
-          value={draft.tag}
+          defaultValue={draft.title}
           onChange={handleChange}
         >
           <option value="Todo">Todo</option>
