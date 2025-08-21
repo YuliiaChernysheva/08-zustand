@@ -9,8 +9,7 @@ import { fetchNotes, NotesResponse } from "@/lib/api";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import NoteList from "@/components/NoteList/NoteList";
-import NoteForm from "@/components/NoteForm/NoteForm";
-import Modal from "@/components/Modal/Modal";
+import Link from "next/link";
 
 interface NotesClientProps {
   initialData: NotesResponse;
@@ -21,7 +20,6 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const handleSearch = useDebouncedCallback((search: string) => {
     setDebouncedSearch(search);
@@ -52,25 +50,15 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
         {data && data.totalPages > 1 && (
           <Pagination page={page} total={data.totalPages} onChange={setPage} />
         )}
-        <button
-          className={css.button}
-          type="button"
-          onClick={() => setModalIsOpen(true)}
-        >
+        <Link href="/notes/action/create" className={css.button}>
           Create note +
-        </button>
+        </Link>
       </header>
 
       {isLoading && <p>Loading, please wait...</p>}
       {isError && <p>Could not fetch the list of notes</p>}
       {isSuccess && data.notes.length === 0 && <p>No notes found</p>}
       {isSuccess && data.notes.length > 0 && <NoteList notes={data.notes} />}
-
-      {modalIsOpen && (
-        <Modal onClose={() => setModalIsOpen(false)}>
-          <NoteForm onClose={() => setModalIsOpen(false)} />
-        </Modal>
-      )}
     </div>
   );
 }

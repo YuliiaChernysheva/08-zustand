@@ -23,13 +23,11 @@ export type FetchNotesParams = {
   tag?: string;
 };
 
-// export type CategoryType = {
-//   id: string;
-//   name: string;
-//   description: string;
-//   createdAt: string;
-//   updatedAt: string;
-// };
+export type CreateNoteData = {
+  title: string;
+  content: string;
+  tag: string;
+};
 
 export const fetchNotes = async ({
   page = 1,
@@ -42,10 +40,6 @@ export const fetchNotes = async ({
     perPage,
     tag,
   };
-
-  // if (tag) {
-  //   params.categoryId = tag;
-  // }
 
   if (search) {
     params.search = search;
@@ -73,7 +67,7 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
   return response.data;
 };
 
-// export const getCategories = async () => {
-//   const { data } = await axios.get<CategoryType[]>(`/categories`);
-//   return data;
-// };
+export const createNote = async (data: CreateNoteData): Promise<Note> => {
+  const response = await axiosInstance.post<Note>(`/notes/`, data);
+  return response.data;
+};
