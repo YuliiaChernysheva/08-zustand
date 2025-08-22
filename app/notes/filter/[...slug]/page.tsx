@@ -1,6 +1,7 @@
 import { fetchNotes } from "@/lib/api";
 import NotesClient from "./Notes.client";
 import { Metadata } from "next";
+import { Tag } from "@/types/note";
 
 type Props = {
   params: Promise<{ slug: string[] }>;
@@ -30,13 +31,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 export default async function NotesByFilter({ params }: Props) {
   const { slug } = await params;
-  const tag: string = slug[0];
+  const tagFromSlug = slug[0];
+
+  const isValidTag = (value: string): value is Tag => {
+    return ["Todo", "Work", "Personal", "Meeting", "Shopping"].includes(value);
+  };
+
+  const validTag = isValidTag(tagFromSlug) ? tagFromSlug : undefined;
 
   const data = await fetchNotes({
     search: "",
     page: 1,
-    ...(tag && tag !== "All" && { tag }),
+    tag: validTag,
   });
 
-  return <NotesClient initialData={data} tag={tag} />;
+  return <NotesClient initialData={data} tag={tagFromSlug} />;
 }

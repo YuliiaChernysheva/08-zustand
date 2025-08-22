@@ -19,8 +19,8 @@ export const useNoteDraft = create<NoteDraft>()(
     (set) => ({
       draft: defaultDraft,
       setDraft: (note) =>
-        set((state) => ({
-          draft: { ...state.draft, ...note },
+        set(() => ({
+          draft: note,
         })),
       clearDraft: () => set(() => ({ draft: { ...defaultDraft } })),
     }),
