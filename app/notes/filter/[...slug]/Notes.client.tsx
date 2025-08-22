@@ -10,6 +10,7 @@ import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import NoteList from "@/components/NoteList/NoteList";
 import Link from "next/link";
+import { Tag } from "@/types/note";
 
 interface NotesClientProps {
   initialData: NotesResponse;
@@ -37,7 +38,7 @@ export default function NotesClient({ tag, initialData }: NotesClientProps) {
       fetchNotes({
         search: debouncedSearch,
         page,
-        tag: tag !== "All" ? tag : undefined,
+        tag: tag !== "All" ? (tag as Tag) : undefined,
       }),
     placeholderData: keepPreviousData,
     initialData,
