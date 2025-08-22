@@ -5,7 +5,7 @@ import { CreateNoteData } from "../api";
 const defaultDraft: CreateNoteData = {
   title: "",
   content: "",
-  tag: "",
+  tag: "Todo",
 };
 
 type NoteDraft = {
