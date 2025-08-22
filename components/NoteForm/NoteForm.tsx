@@ -91,21 +91,21 @@ const NoteForm = () => {
           <option value="Shopping">Shopping</option>
         </select>
       </div>
-
       <div className={css.actions}>
-        <button
-          type="button"
-          onClick={handleCancel}
-          className={css.cancelButton}
-        >
-          Cancel
-        </button>
         <button
           type="submit"
           className={css.submitButton}
           disabled={isSubmitting}
         >
           {isSubmitting ? "Creating..." : "Create note"}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleCancel}
+          className={css.cancelButton}
+        >
+          Cancel
         </button>
       </div>
     </form>
