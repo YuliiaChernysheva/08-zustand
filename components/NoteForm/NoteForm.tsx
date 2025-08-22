@@ -33,7 +33,7 @@ const NoteForm = () => {
         tag: draft.tag as Tag,
       });
       clearDraft();
-      router.push("/notes/filter/all");
+      router.back();
     } catch (error) {
       console.error("Failed to create note", error);
       alert("Failed to create note");
@@ -43,7 +43,7 @@ const NoteForm = () => {
   };
 
   const handleCancel = () => {
-    router.push("/notes/filter/all");
+    router.back();
   };
 
   return (
