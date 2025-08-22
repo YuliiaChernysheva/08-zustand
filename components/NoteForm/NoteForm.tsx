@@ -69,7 +69,7 @@ const NoteForm = () => {
           id="content"
           name="content"
           className={css.textarea}
-          defaultValue={draft.title}
+          defaultValue={draft.content}
           onChange={handleChange}
           maxLength={500}
         />
@@ -81,7 +81,7 @@ const NoteForm = () => {
           id="tag"
           name="tag"
           className={css.select}
-          defaultValue={draft.title}
+          defaultValue={draft.title || "Todo"}
           onChange={handleChange}
         >
           <option value="Todo">Todo</option>

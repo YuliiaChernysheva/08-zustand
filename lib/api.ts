@@ -23,11 +23,11 @@ export type FetchNotesParams = {
   tag?: Tag;
 };
 
-export type CreateNoteData = {
-  title: string;
-  content: string;
-  tag: Tag;
-};
+// export type CreateNoteData = {
+//   title: string;
+//   content: string;
+//   tag: Tag;
+// };
 
 export const fetchNotes = async ({
   page = 1,
