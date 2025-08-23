@@ -6,13 +6,25 @@ import css from "./NoteForm.module.css";
 import type { Tag } from "@/types/note";
 import { addNote } from "@/lib/api";
 import { useNoteDraft } from "@/lib/store/noteStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const NoteForm = () => {
   const router = useRouter();
-
   const { draft, setDraft, clearDraft } = useNoteDraft();
-
+  const queryClient = useQueryClient();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const mutation = useMutation({
+    mutationFn: (newNote: typeof draft) => addNote(newNote),
+    onSuccess: () => {
+      clearDraft();
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      router.push("/notes/filter/All");
+    },
+    onError: () => {
+      alert("Failed to create note");
+    },
+  });
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -22,24 +34,19 @@ const NoteForm = () => {
     const { name, value } = e.target;
     setDraft({ ...draft, [name]: value });
   };
-  const handleSubmit = async (e: React.FormEvent) => {
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     setIsSubmitting(true);
-
-    try {
-      await addNote({
+    mutation.mutate(
+      {
         ...draft,
         tag: draft.tag as Tag,
-      });
-      clearDraft();
-      router.back();
-    } catch (error) {
-      console.error("Failed to create note", error);
-      alert("Failed to create note");
-    } finally {
-      setIsSubmitting(false);
-    }
+      },
+      {
+        onSettled: () => setIsSubmitting(false),
+      }
+    );
   };
 
   const handleCancel = () => {
@@ -55,7 +62,7 @@ const NoteForm = () => {
           name="title"
           type="text"
           className={css.input}
-          defaultValue={draft.title}
+          value={draft.title}
           onChange={handleChange}
           required
           minLength={3}
@@ -69,7 +76,7 @@ const NoteForm = () => {
           id="content"
           name="content"
           className={css.textarea}
-          defaultValue={draft.content}
+          value={draft.content}
           onChange={handleChange}
           maxLength={500}
         />
@@ -81,7 +88,7 @@ const NoteForm = () => {
           id="tag"
           name="tag"
           className={css.select}
-          defaultValue={draft.title || "Todo"}
+          value={draft.tag || "Todo"}
           onChange={handleChange}
         >
           <option value="Todo">Todo</option>

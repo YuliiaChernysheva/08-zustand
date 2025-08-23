@@ -39,11 +39,11 @@ export default async function NotesByFilter({ params }: Props) {
 
   const validTag = isValidTag(tagFromSlug) ? tagFromSlug : undefined;
 
-  const data = await fetchNotes({
+  await fetchNotes({
     search: "",
     page: 1,
     tag: validTag,
   });
 
-  return <NotesClient initialData={data} tag={tagFromSlug} />;
+  return <NotesClient tag={tagFromSlug} />;
 }
